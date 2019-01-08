@@ -56,6 +56,32 @@ class Market
     inventory
   end
 
-
-
+  #This method only partly works. It is able to return true or false deplending on if the item is in stock. And it is able to change the stock of the vendor. If the vendor does not have enough of that stock tho, I was unable to figure out how to move to the next vendor, and subtract the difference from their stock. Spent a while on this, and could not figure out what I was doing wrong.
+  def sell(item, quantity)
+    if total_inventory.has_key?(item) && quantity < total_inventory[item]
+      @vendors.each do |vendor|
+        if vendor.inventory.has_key?(item)
+          if vendor.inventory[item] >= quantity
+            vendor.inventory[item] -= quantity
+          else
+            vendor.inventory[item] -= quantity
+            diff = vendor.inventory[item].abs
+            vendor.inventory[item] = 0
+            @vendors.each do |vendor|
+              if vendor.inventory.has_key?(item)
+                if vendor.inventory[item] != 0
+                  require "pry"
+                  binding.pry
+                  vendor.inventory[item] - diff
+                end
+              end
+            end
+          end
+        end
+      end
+        return true
+      else
+        return false
+    end
+  end
 end
